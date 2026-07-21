@@ -29,7 +29,7 @@ jobs:
       - name: Run MLflow Project
         run: |
           export MLFLOW_TRACKING_URI="sqlite:///mlflow.db"
-          mlflow run MLProject --no-conda
+          mlflow run MLProject --env-manager=local
           python MLProject/get_latest_run.py
 
       - name: Set up Docker Buildx
