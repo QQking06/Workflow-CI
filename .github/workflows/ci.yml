@@ -28,8 +28,8 @@ jobs:
 
       - name: Run MLflow Project
         run: |
-          export MLFLOW_TRACKING_URI="sqlite:///mlflow.db"
-          mlflow run MLProject --env-manager=local
+          export MLFLOW_TRACKING_URI="sqlite:///$GITHUB_WORKSPACE/mlflow.db"
+          mlflow run MLProject --env-manager local
           python MLProject/get_latest_run.py
 
       - name: Set up Docker Buildx
@@ -37,7 +37,7 @@ jobs:
 
       - name: Build Docker Image from MLflow Model
         run: |
-          export MLFLOW_TRACKING_URI="sqlite:///mlflow.db"
+          export MLFLOW_TRACKING_URI="sqlite:///$GITHUB_WORKSPACE/mlflow.db"
           mlflow models build-docker -m "runs:/${{ env.LATEST_RUN_ID }}/model" -n "titanic-mlflow-model:latest"
 
       - name: Log in to Docker Hub
