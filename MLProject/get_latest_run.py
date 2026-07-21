@@ -11,14 +11,12 @@ def main():
     mlflow.set_tracking_uri(tracking_uri)
     client = mlflow.tracking.MlflowClient()
     
-    runs = client.search_runs(experiment_ids=['0'], order_by=['attribute.start_time DESC'])
-    if not runs:
-        # Also try searching across all experiments
-        all_exp = client.search_experiments()
-        exp_ids = [e.experiment_id for e in all_exp]
-        if exp_ids:
-            runs = client.search_runs(experiment_ids=exp_ids, order_by=['attribute.start_time DESC'])
-            
+    all_experiments = client.search_experiments()
+    exp_ids = [e.experiment_id for e in all_experiments]
+    print(f"Found experiment IDs: {exp_ids}")
+    
+    runs = client.search_runs(experiment_ids=exp_ids, order_by=['attribute.start_time DESC']) if exp_ids else []
+    
     if runs:
         run_id = runs[0].info.run_id
         print(f"Latest Run ID: {run_id}")

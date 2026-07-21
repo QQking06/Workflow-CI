@@ -38,7 +38,7 @@ jobs:
       - name: Build Docker Image from MLflow Model
         run: |
           export MLFLOW_TRACKING_URI="sqlite:///$GITHUB_WORKSPACE/mlflow.db"
-          mlflow models build-docker -m "runs:/${{ env.LATEST_RUN_ID }}/model" -n "titanic-mlflow-model:latest"
+          mlflow models build-docker -m "runs:/${{ env.LATEST_RUN_ID }}/model" -n "titanic-mlflow-model:latest" --env-manager local
 
       - name: Log in to Docker Hub
         if: ${{ env.DOCKERHUB_USERNAME != '' && env.DOCKERHUB_TOKEN != '' }}
